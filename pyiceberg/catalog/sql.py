@@ -33,14 +33,14 @@ from sqlalchemy import (
     union,
     update,
 )
+from sqlalchemy import column as mapped_column
 from sqlalchemy.exc import IntegrityError, NoResultFound, OperationalError, ProgrammingError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import (
     # DeclarativeBase,
     Mapped,
     # MappedAsDataclass,
-    Session,
-    mapped_column,
+    Session
 )
 
 from pyiceberg.catalog import (
