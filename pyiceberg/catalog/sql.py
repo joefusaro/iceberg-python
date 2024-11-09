@@ -36,14 +36,8 @@ from sqlalchemy import (
 )
 from sqlalchemy import column as mapped_column
 from sqlalchemy.exc import IntegrityError, NoResultFound, OperationalError, ProgrammingError
-from sqlalchemy import table as sa_table
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import (
-    # DeclarativeBase,
-    Mapped,
-    # MappedAsDataclass,
-    Session
-)
+from sqlalchemy.orm import Session
 
 from pyiceberg.catalog import (
     METADATA_LOCATION,
@@ -82,7 +76,6 @@ DEFAULT_POOL_PRE_PING_VALUE = "false"
 DEFAULT_INIT_CATALOG_TABLES = "true"
 
 DeclarativeBase = declarative_base()
-SqlTable = sa_table(name='sqltable')
 
 
 class SqlCatalogBaseTable(DeclarativeBase):
