@@ -81,11 +81,12 @@ DEFAULT_INIT_CATALOG_TABLES = "true"
 
 DeclarativeBase = declarative_base()
 
-class SqlCatalogBaseTable(DeclarativeBase):
-    pass
+#class SqlCatalogBaseTable(DeclarativeBase):
+#    __tablename__ = "iceberg_tables"
+#    pass
 
 
-class IcebergTables(SqlCatalogBaseTable):
+class IcebergTables(DeclarativeBase):
     __tablename__ = "iceberg_tables"
 
     catalog_name: Mapped[str] = mapped_column(String(255), nullable=False, primary_key=True)
@@ -95,7 +96,7 @@ class IcebergTables(SqlCatalogBaseTable):
     previous_metadata_location: Mapped[Optional[str]] = mapped_column(String(1000), nullable=True)
 
 
-class IcebergNamespaceProperties(SqlCatalogBaseTable):
+class IcebergNamespaceProperties(DeclarativeBase):
     __tablename__ = "iceberg_namespace_properties"
     # Catalog minimum Namespace Properties
     NAMESPACE_MINIMAL_PROPERTIES = {"exists": "true"}
@@ -147,10 +148,10 @@ class SqlCatalog(MetastoreCatalog):
                     return
 
     def create_tables(self) -> None:
-        SqlCatalogBaseTable.metadata.create_all(self.engine)
+        DeclarativeBase.metadata.create_all(self.engine)
 
     def destroy_tables(self) -> None:
-        SqlCatalogBaseTable.metadata.drop_all(self.engine)
+        DeclarativeBase.metadata.drop_all(self.engine)
 
     def _convert_orm_to_iceberg(self, orm_table: IcebergTables) -> Table:
         # Check for expected properties.
