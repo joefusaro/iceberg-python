@@ -26,6 +26,7 @@ from typing import (
 
 from sqlalchemy import (
     String,
+    Column,
     create_engine,
     delete,
     insert,
@@ -35,6 +36,7 @@ from sqlalchemy import (
 )
 from sqlalchemy import column as mapped_column
 from sqlalchemy.exc import IntegrityError, NoResultFound, OperationalError, ProgrammingError
+from sqlalchemy import table as sa_table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import (
     # DeclarativeBase,
@@ -80,31 +82,31 @@ DEFAULT_POOL_PRE_PING_VALUE = "false"
 DEFAULT_INIT_CATALOG_TABLES = "true"
 
 DeclarativeBase = declarative_base()
-
-#class SqlCatalogBaseTable(DeclarativeBase):
-#    __tablename__ = "iceberg_tables"
-#    pass
+SqlTable = sa_table(name='sqltable')
 
 
-class IcebergTables(DeclarativeBase):
+class SqlCatalogBaseTable(DeclarativeBase):
+    __abstract__ = True
+
+
+class IcebergTables(SqlCatalogBaseTable):
     __tablename__ = "iceberg_tables"
+    catalog_name = Column(String(255), nullable=False, primary_key=True)
+    table_namespace = Column(String(255), nullable=False, primary_key=True)
+    table_name = Column(String(255), nullable=False, primary_key=True)
+    metadata_location = Column(String(1000), nullable=True)
+    previous_metadata_location = Column(String(1000), nullable=True)
 
-    catalog_name: Mapped[str] = mapped_column(String(255), nullable=False, primary_key=True)
-    table_namespace: Mapped[str] = mapped_column(String(255), nullable=False, primary_key=True)
-    table_name: Mapped[str] = mapped_column(String(255), nullable=False, primary_key=True)
-    metadata_location: Mapped[Optional[str]] = mapped_column(String(1000), nullable=True)
-    previous_metadata_location: Mapped[Optional[str]] = mapped_column(String(1000), nullable=True)
 
-
-class IcebergNamespaceProperties(DeclarativeBase):
+class IcebergNamespaceProperties(SqlCatalogBaseTable):
     __tablename__ = "iceberg_namespace_properties"
     # Catalog minimum Namespace Properties
     NAMESPACE_MINIMAL_PROPERTIES = {"exists": "true"}
 
-    catalog_name: Mapped[str] = mapped_column(String(255), nullable=False, primary_key=True)
-    namespace: Mapped[str] = mapped_column(String(255), nullable=False, primary_key=True)
-    property_key: Mapped[str] = mapped_column(String(255), nullable=False, primary_key=True)
-    property_value: Mapped[str] = mapped_column(String(1000), nullable=False)
+    catalog_name = Column(String(255), nullable=False, primary_key=True)
+    namespace = Column(String(255), nullable=False, primary_key=True)
+    property_key = Column(String(255), nullable=False, primary_key=True)
+    property_key = Column(String(1000), nullable=False)
 
 
 class SqlCatalog(MetastoreCatalog):
