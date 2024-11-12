@@ -99,7 +99,7 @@ class IcebergNamespaceProperties(SqlCatalogBaseTable):
     catalog_name = Column(String(255), nullable=False, primary_key=True)
     namespace = Column(String(255), nullable=False, primary_key=True)
     property_key = Column(String(255), nullable=False, primary_key=True)
-    property_key = Column(String(1000), nullable=False)
+    property_value = Column(String(1000), nullable=False)
 
 
 class SqlCatalog(MetastoreCatalog):
