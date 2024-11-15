@@ -15,7 +15,15 @@
  - limitations under the License.
  -->
 
-# Iceberg Python
+# Iceberg Python (fork)
+
+We wanted to use python-iceberg in Airflow, specifically the SQL Catalog functionality, but ran into an issue: Airflow requires SQLAlchemy 1.x and python-iceberg requires SQLAlchemy 2.x 
+
+This fork modifies the SQL Catalog functions for SQLAlchemy 1.x 
+
+It won't be complete for other areas where SQLAlchemy is used 
+
+----- 
 
 PyIceberg is a Python library for programmatic access to Iceberg table metadata as well as to table data in Iceberg format. It is a Python implementation of the [Iceberg table spec](https://iceberg.apache.org/spec/).
 
